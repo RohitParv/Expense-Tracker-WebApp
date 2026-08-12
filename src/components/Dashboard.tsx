@@ -8,33 +8,12 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { CreditCard, Trash2, TrendingUp, Wallet } from "lucide-react";
+import { CreditCard, TrendingUp, Wallet } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Expense } from "@/lib/supabase/types";
+import { CATEGORY_COLOR, CATEGORY_LABEL, formatCurrency } from "@/lib/expense-format";
 import AddExpenseForm from "@/components/AddExpenseForm";
-import ExpenseFilter from "@/components/ExpenseFilter";
-
-const CATEGORY_LABEL: Record<Expense["category"], string> = {
-  credit_card: "Credit Card",
-  debit_card: "Debit Card",
-};
-
-const CATEGORY_COLOR: Record<Expense["category"], string> = {
-  credit_card: "#fb923c",
-  debit_card: "#38bdf8",
-};
-
-const CATEGORY_ICON: Record<Expense["category"], typeof CreditCard> = {
-  credit_card: CreditCard,
-  debit_card: Wallet,
-};
-
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(amount);
-}
+import ExpenseHistory from "@/components/ExpenseHistory";
 
 function sortExpenses(expenses: Expense[]) {
   return [...expenses].sort((a, b) => {
@@ -231,63 +210,7 @@ export default function Dashboard({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-black/5 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-zinc-900">
-        <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          Recent expenses
-        </h2>
-        {expenses.length === 0 ? (
-          <p className="mt-4 text-center text-sm text-zinc-500 dark:text-zinc-400">
-            No expenses yet. Add your first one above.
-          </p>
-        ) : (
-          <ul className="mt-3 divide-y divide-zinc-100 dark:divide-zinc-800">
-            {expenses.slice(0, 20).map((expense) => {
-              const Icon = CATEGORY_ICON[expense.category];
-              return (
-                <li
-                  key={expense.id}
-                  className="group flex items-center justify-between gap-3 py-3"
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    <div
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
-                      style={{
-                        backgroundColor: `${CATEGORY_COLOR[expense.category]}1a`,
-                        color: CATEGORY_COLOR[expense.category],
-                      }}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
-                        {expense.description || CATEGORY_LABEL[expense.category]}
-                      </p>
-                      <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-                        {expense.date} &middot; {CATEGORY_LABEL[expense.category]}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="shrink-0 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                      {formatCurrency(Number(expense.amount))}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(expense.id)}
-                      aria-label="Delete expense"
-                      className="shrink-0 rounded-lg p-1.5 text-zinc-400 opacity-0 transition-opacity hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 focus-visible:opacity-100 dark:hover:bg-red-500/10"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </div>
-
-      <ExpenseFilter expenses={expenses} />
+      <ExpenseHistory expenses={expenses} onDelete={handleDelete} />
     </div>
   );
 }
