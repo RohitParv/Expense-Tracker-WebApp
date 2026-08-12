@@ -88,8 +88,8 @@ export default function DateRangePicker({
           onClick={() => setOpen((v) => !v)}
           className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium shadow-sm transition-colors ${
             from
-              ? "border-violet-300 bg-violet-50 text-violet-700 dark:border-violet-500/30 dark:bg-violet-500/10 dark:text-violet-300"
-              : "border-zinc-200 bg-white text-zinc-600 hover:border-violet-300 hover:text-violet-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:text-violet-300"
+              ? "border-cyan-300 bg-cyan-50 text-cyan-700 dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-300"
+              : "border-zinc-200 bg-white text-zinc-600 hover:border-cyan-300 hover:text-cyan-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:text-cyan-300"
           }`}
         >
           <CalendarDays className="h-4 w-4" />
@@ -116,7 +116,7 @@ export default function DateRangePicker({
                 key={preset.label}
                 type="button"
                 onClick={() => applyPreset(preset.days, preset.label === "This month")}
-                className="whitespace-nowrap rounded-lg px-2.5 py-1.5 text-left text-xs font-medium text-zinc-600 hover:bg-violet-50 hover:text-violet-700 dark:text-zinc-300 dark:hover:bg-violet-500/10 dark:hover:text-violet-300"
+                className="whitespace-nowrap rounded-lg px-2.5 py-1.5 text-left text-xs font-medium text-zinc-600 hover:bg-cyan-50 hover:text-cyan-700 dark:text-zinc-300 dark:hover:bg-cyan-500/10 dark:hover:text-cyan-300"
               >
                 {preset.label}
               </button>

@@ -130,11 +130,11 @@ export default function Calendar({
                 disabled
                   ? "cursor-default text-zinc-300 dark:text-zinc-700"
                   : isEndpoint
-                    ? "bg-violet-600 text-white shadow-sm shadow-violet-600/30"
+                    ? "bg-cyan-600 text-white shadow-sm shadow-cyan-600/30"
                     : inRange
-                      ? "bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300"
+                      ? "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300"
                       : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
-              } ${isToday && !isEndpoint ? "ring-1 ring-inset ring-violet-400" : ""}`}
+              } ${isToday && !isEndpoint ? "ring-1 ring-inset ring-cyan-400" : ""}`}
             >
               {date.getDate()}
             </button>
