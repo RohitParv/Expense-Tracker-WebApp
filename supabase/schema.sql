@@ -6,7 +6,7 @@ create table if not exists public.expenses (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users (id) on delete cascade,
   amount numeric(12, 2) not null check (amount > 0),
-  category text not null check (category in ('credit_card', 'regular')),
+  category text not null check (category in ('credit_card', 'debit_card')),
   description text,
   date date not null,
   created_at timestamptz not null default now()

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Expense Tracker",
-  description: "Track credit card and regular expenses across your devices.",
+  description: "Track credit card and debit card expenses across your devices.",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -35,7 +35,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#18181b",
+  themeColor: "#7c3aed",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

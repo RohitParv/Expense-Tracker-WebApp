@@ -1,7 +1,7 @@
 # Expense Tracker
 
 A small expense tracker built with Next.js (App Router) and Supabase. Log
-expenses as "Credit Card" or "Regular", see totals and a category
+expenses as "Credit Card" or "Debit Card", see totals and a category
 breakdown, and everything syncs in real time across devices through a
 shared Supabase backend. Installable as a PWA on a phone home screen.
 
@@ -18,7 +18,10 @@ shared Supabase backend. Installable as a PWA on a phone home screen.
 1. Create a project at [supabase.com](https://supabase.com).
 2. In the SQL editor, run [`supabase/schema.sql`](./supabase/schema.sql). It
    creates the `expenses` table, row-level security policies scoped to
-   `auth.uid()`, and enables Realtime on the table.
+   `auth.uid()`, and enables Realtime on the table. If you already ran the
+   old schema (with a "Regular" category), also run
+   [`supabase/migrations/0002_rename_regular_to_debit_card.sql`](./supabase/migrations/0002_rename_regular_to_debit_card.sql)
+   to migrate existing rows to "Debit Card".
 3. In **Authentication -> Providers**, confirm Email is enabled. For local
    testing you can disable "Confirm email" under **Authentication ->
    Settings** so signup logs you in immediately.

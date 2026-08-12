@@ -1,4 +1,4 @@
-export type ExpenseCategory = "credit_card" | "regular";
+export type ExpenseCategory = "credit_card" | "debit_card";
 
 export interface Database {
   public: {

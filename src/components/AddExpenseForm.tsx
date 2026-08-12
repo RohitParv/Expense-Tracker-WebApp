@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { CreditCard, Plus, Wallet } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { ExpenseCategory } from "@/lib/supabase/types";
 
@@ -14,7 +15,7 @@ function todayLocalISODate() {
 export default function AddExpenseForm({ userId }: { userId: string }) {
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(todayLocalISODate());
-  const [category, setCategory] = useState<ExpenseCategory>("regular");
+  const [category, setCategory] = useState<ExpenseCategory>("debit_card");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +50,7 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
 
     setAmount("");
     setDescription("");
-    setCategory("regular");
+    setCategory("debit_card");
     setDate(todayLocalISODate());
     setSuccess(true);
     setTimeout(() => setSuccess(false), 2000);
@@ -58,7 +59,7 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 rounded-xl border border-black/10 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-zinc-900"
+      className="flex flex-col gap-4 rounded-2xl border border-black/5 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-zinc-900"
     >
       <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
         Add expense
@@ -72,18 +73,23 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
           >
             Amount
           </label>
-          <input
-            id="amount"
-            type="number"
-            inputMode="decimal"
-            step="0.01"
-            min="0.01"
-            required
-            placeholder="0.00"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="rounded-md border border-zinc-300 bg-transparent px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:text-zinc-50"
-          />
+          <div className="relative">
+            <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-zinc-400">
+              $
+            </span>
+            <input
+              id="amount"
+              type="number"
+              inputMode="decimal"
+              step="0.01"
+              min="0.01"
+              required
+              placeholder="0.00"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full rounded-xl border border-zinc-200 bg-white py-2 pl-6 pr-3 text-sm text-zinc-900 outline-none transition-colors focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-1">
@@ -99,7 +105,7 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
             required
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="rounded-md border border-zinc-300 bg-transparent px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:text-zinc-50"
+            className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
           />
         </div>
       </div>
@@ -111,24 +117,26 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
-            onClick={() => setCategory("regular")}
-            className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
-              category === "regular"
-                ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
-                : "border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            onClick={() => setCategory("debit_card")}
+            className={`flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
+              category === "debit_card"
+                ? "border-sky-500 bg-sky-500 text-white shadow-sm shadow-sky-500/25"
+                : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
             }`}
           >
-            Regular
+            <Wallet className="h-4 w-4" />
+            Debit Card
           </button>
           <button
             type="button"
             onClick={() => setCategory("credit_card")}
-            className={`rounded-md border px-3 py-2 text-sm font-medium transition-colors ${
+            className={`flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-sm font-medium transition-colors ${
               category === "credit_card"
-                ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
-                : "border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                ? "border-orange-500 bg-orange-500 text-white shadow-sm shadow-orange-500/25"
+                : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
             }`}
           >
+            <CreditCard className="h-4 w-4" />
             Credit Card
           </button>
         </div>
@@ -148,13 +156,17 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
           placeholder="e.g. Groceries"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="rounded-md border border-zinc-300 bg-transparent px-3 py-2 text-sm text-zinc-900 outline-none focus:border-zinc-500 dark:border-zinc-700 dark:text-zinc-50"
+          className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
         />
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-500/10 dark:text-red-400">
+          {error}
+        </p>
+      )}
       {success && (
-        <p className="text-sm text-emerald-600 dark:text-emerald-400">
+        <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
           Expense added.
         </p>
       )}
@@ -162,8 +174,9 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
       <button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100"
       >
+        <Plus className="h-4 w-4" />
         {loading ? "Saving..." : "Add expense"}
       </button>
     </form>

@@ -1,12 +1,12 @@
 {
   "name": "Expense Tracker",
   "short_name": "Expenses",
-  "description": "Track credit card and regular expenses across your devices.",
+  "description": "Track credit card and debit card expenses across your devices.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#18181b",
+  "background_color": "#f7f7fb",
+  "theme_color": "#7c3aed",
   "orientation": "portrait",
   "icons": [
     {
