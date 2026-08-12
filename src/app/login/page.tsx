@@ -59,13 +59,13 @@ export default function LoginPage() {
   return (
     <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-zinc-50 px-4 py-12 dark:bg-black">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-32 -left-24 h-80 w-80 rounded-full bg-violet-400/30 blur-3xl dark:bg-violet-600/20" />
-        <div className="absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-indigo-400/30 blur-3xl dark:bg-indigo-600/20" />
+        <div className="absolute -top-32 -left-24 h-80 w-80 rounded-full bg-cyan-400/30 blur-3xl dark:bg-cyan-600/20" />
+        <div className="absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-teal-400/30 blur-3xl dark:bg-teal-600/20" />
       </div>
 
       <div className="animate-fade-in-up relative w-full max-w-sm">
         <div className="mb-6 flex flex-col items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-600/30">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-600/30">
             <Sparkles className="h-6 w-6" />
           </div>
           <div className="text-center">
@@ -99,7 +99,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-9 pr-3 text-sm text-zinc-900 outline-none transition-colors focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-9 pr-3 text-sm text-zinc-900 outline-none transition-colors focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
                 />
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-9 pr-3 text-sm text-zinc-900 outline-none transition-colors focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pl-9 pr-3 text-sm text-zinc-900 outline-none transition-colors focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
                 />
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-600/25 transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100"
+              className="mt-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyan-600/25 transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100"
             >
               {loading
                 ? "Please wait..."
