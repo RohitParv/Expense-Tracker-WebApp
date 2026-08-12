@@ -12,6 +12,7 @@ import { CreditCard, Trash2, TrendingUp, Wallet } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Expense } from "@/lib/supabase/types";
 import AddExpenseForm from "@/components/AddExpenseForm";
+import ExpenseFilter from "@/components/ExpenseFilter";
 
 const CATEGORY_LABEL: Record<Expense["category"], string> = {
   credit_card: "Credit Card",
@@ -285,6 +286,8 @@ export default function Dashboard({
           </ul>
         )}
       </div>
+
+      <ExpenseFilter expenses={expenses} />
     </div>
   );
 }
