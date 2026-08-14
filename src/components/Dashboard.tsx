@@ -1,19 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
 import { CreditCard, TrendingUp, Wallet } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { Expense } from "@/lib/supabase/types";
-import { CATEGORY_COLOR, CATEGORY_LABEL, formatCurrency } from "@/lib/expense-format";
+import { formatCurrency } from "@/lib/expense-format";
 import AddExpenseForm from "@/components/AddExpenseForm";
 import ExpenseHistory from "@/components/ExpenseHistory";
+import AnalyticsView from "@/components/AnalyticsView";
+import AssistantWidget from "@/components/AssistantWidget";
 import Sidebar, { type SidebarView } from "@/components/Sidebar";
 
 function sortExpenses(expenses: Expense[]) {
@@ -89,18 +84,6 @@ export default function Dashboard({
     return { total, byCategory };
   }, [expenses]);
 
-  const chartData = useMemo(
-    () =>
-      (Object.keys(totals.byCategory) as Expense["category"][])
-        .filter((category) => totals.byCategory[category] > 0)
-        .map((category) => ({
-          category,
-          name: CATEGORY_LABEL[category],
-          value: totals.byCategory[category],
-        })),
-    [totals]
-  );
-
   async function handleDelete(id: string) {
     const supabase = createClient();
     setExpenses((current) => current.filter((e) => e.id !== id));
@@ -158,69 +141,18 @@ export default function Dashboard({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div className="max-w-xl">
               <AddExpenseForm userId={userId} />
-
-              <div className="rounded-2xl border border-black/5 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-zinc-900">
-                <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                  Credit vs. Debit
-                </h2>
-                {chartData.length === 0 ? (
-                  <p className="mt-8 text-center text-sm text-zinc-500 dark:text-zinc-400">
-                    No expenses yet.
-                  </p>
-                ) : (
-                  <div className="h-56">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={chartData}
-                          dataKey="value"
-                          nameKey="name"
-                          innerRadius={50}
-                          outerRadius={80}
-                          paddingAngle={3}
-                          cornerRadius={6}
-                        >
-                          {chartData.map((entry) => (
-                            <Cell
-                              key={entry.category}
-                              fill={CATEGORY_COLOR[entry.category]}
-                              stroke="transparent"
-                            />
-                          ))}
-                        </Pie>
-                        <Tooltip
-                          formatter={(value) => formatCurrency(Number(value))}
-                          contentStyle={{
-                            borderRadius: 12,
-                            border: "none",
-                            boxShadow:
-                              "0 10px 30px -10px rgba(0,0,0,0.25)",
-                          }}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="mt-2 flex justify-center gap-4 text-xs text-zinc-600 dark:text-zinc-400">
-                      {chartData.map((entry) => (
-                        <span key={entry.category} className="flex items-center gap-1.5">
-                          <span
-                            className="h-2.5 w-2.5 rounded-full"
-                            style={{ backgroundColor: CATEGORY_COLOR[entry.category] }}
-                          />
-                          {entry.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
           </>
-        ) : (
+        ) : view === "history" ? (
           <ExpenseHistory expenses={expenses} onDelete={handleDelete} />
+        ) : (
+          <AnalyticsView expenses={expenses} />
         )}
       </div>
+
+      <AssistantWidget userId={userId} expenses={expenses} />
     </div>
   );
 }
