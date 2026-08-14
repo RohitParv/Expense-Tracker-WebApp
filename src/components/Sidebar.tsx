@@ -1,10 +1,11 @@
 "use client";
 
-import { LayoutDashboard, Receipt } from "lucide-react";
+import { ChartPie, LayoutDashboard, Receipt } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "history", label: "Recent Transactions", icon: Receipt },
+  { id: "analytics", label: "Your Analytics", icon: ChartPie },
 ] as const;
 
 export type SidebarView = (typeof NAV_ITEMS)[number]["id"];

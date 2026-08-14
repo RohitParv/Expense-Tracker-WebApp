@@ -3,7 +3,8 @@
 import { useState, type FormEvent } from "react";
 import { CreditCard, Plus, Wallet } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import type { ExpenseCategory } from "@/lib/supabase/types";
+import type { ExpenseCategory, SpendingCategory } from "@/lib/supabase/types";
+import { SPENDING_CATEGORY_LABEL, SPENDING_CATEGORY_ORDER } from "@/lib/expense-format";
 
 function todayLocalISODate() {
   const now = new Date();
@@ -16,6 +17,7 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(todayLocalISODate());
   const [category, setCategory] = useState<ExpenseCategory>("debit_card");
+  const [spendingCategory, setSpendingCategory] = useState<SpendingCategory | "">("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +33,10 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
       setError("Enter a valid amount greater than 0.");
       return;
     }
+    if (!spendingCategory) {
+      setError("Select a category.");
+      return;
+    }
 
     setLoading(true);
     const supabase = createClient();
@@ -38,6 +44,7 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
       user_id: userId,
       amount: numericAmount,
       category,
+      spending_category: spendingCategory,
       description: description.trim() || null,
       date,
     });
@@ -51,6 +58,7 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
     setAmount("");
     setDescription("");
     setCategory("debit_card");
+    setSpendingCategory("");
     setDate(todayLocalISODate());
     setSuccess(true);
     setTimeout(() => setSuccess(false), 2000);
@@ -112,7 +120,7 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
 
       <div className="flex flex-col gap-1">
         <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-          Category
+          Payment Method
         </span>
         <div className="grid grid-cols-2 gap-2">
           <button
@@ -140,6 +148,31 @@ export default function AddExpenseForm({ userId }: { userId: string }) {
             Credit Card
           </button>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label
+          htmlFor="spending-category"
+          className="text-xs font-medium text-zinc-600 dark:text-zinc-400"
+        >
+          Category
+        </label>
+        <select
+          id="spending-category"
+          required
+          value={spendingCategory}
+          onChange={(e) => setSpendingCategory(e.target.value as SpendingCategory)}
+          className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 outline-none transition-colors focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50"
+        >
+          <option value="" disabled>
+            Select a category
+          </option>
+          {SPENDING_CATEGORY_ORDER.map((c) => (
+            <option key={c} value={c}>
+              {SPENDING_CATEGORY_LABEL[c]}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="flex flex-col gap-1">

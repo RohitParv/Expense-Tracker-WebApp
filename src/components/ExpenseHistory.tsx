@@ -3,7 +3,13 @@
 import { useMemo, useState } from "react";
 import { Trash2 } from "lucide-react";
 import type { Expense } from "@/lib/supabase/types";
-import { CATEGORY_COLOR, CATEGORY_ICON, CATEGORY_LABEL, formatCurrency } from "@/lib/expense-format";
+import {
+  CATEGORY_COLOR,
+  CATEGORY_ICON,
+  CATEGORY_LABEL,
+  SPENDING_CATEGORY_LABEL,
+  formatCurrency,
+} from "@/lib/expense-format";
 import DateRangePicker, { type DateRange } from "@/components/DateRangePicker";
 
 export default function ExpenseHistory({
@@ -50,6 +56,7 @@ export default function ExpenseHistory({
                   <th className="py-2 pr-3 font-medium">Amount</th>
                   <th className="py-2 pr-3 font-medium">Date</th>
                   <th className="py-2 pr-3 font-medium">Category</th>
+                  <th className="py-2 pr-3 font-medium">Payment Method</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -58,6 +65,9 @@ export default function ExpenseHistory({
                     <td className="py-2 pr-3 text-zinc-500 dark:text-zinc-400">{index + 1}</td>
                     <td className="py-2 pr-3 font-medium">{formatCurrency(Number(expense.amount))}</td>
                     <td className="py-2 pr-3 text-zinc-600 dark:text-zinc-300">{expense.date}</td>
+                    <td className="py-2 pr-3 text-zinc-600 dark:text-zinc-300">
+                      {SPENDING_CATEGORY_LABEL[expense.spending_category]}
+                    </td>
                     <td className="py-2 pr-3 text-zinc-600 dark:text-zinc-300">
                       {CATEGORY_LABEL[expense.category]}
                     </td>
@@ -92,10 +102,11 @@ export default function ExpenseHistory({
                   </div>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
-                      {expense.description || CATEGORY_LABEL[expense.category]}
+                      {expense.description || SPENDING_CATEGORY_LABEL[expense.spending_category]}
                     </p>
-                    <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
-                      {expense.date} &middot; {CATEGORY_LABEL[expense.category]}
+                    <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-400">
+                      {expense.date} &middot; {SPENDING_CATEGORY_LABEL[expense.spending_category]}{" "}
+                      &middot; {CATEGORY_LABEL[expense.category]}
                     </p>
                   </div>
                 </div>
