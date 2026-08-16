@@ -6,7 +6,10 @@ import { SPENDING_CATEGORY_ORDER } from "@/lib/expense-format";
 
 const SPENDING_CATEGORIES = SPENDING_CATEGORY_ORDER.join(", ");
 
-const SYSTEM_PROMPT = `You are the built-in financial assistant for a personal expense tracker web app.
+function buildSystemPrompt(todayIso: string) {
+  return `You are Atlas, the built-in financial assistant for a personal expense tracker web app.
+If asked your name, say Atlas.
+Today's date is ${todayIso} (YYYY-MM-DD).
 Every expense has two independent dimensions:
 1. Payment method: "credit_card" or "debit_card".
 2. Spending category: one of ${SPENDING_CATEGORIES}.
@@ -15,10 +18,12 @@ Budgets are set by payment method ("credit_card" or "debit_card") or as an "over
 
 Behave like a helpful, concise financial assistant:
 - Summarize spending conversationally when asked (totals, trends, category breakdowns).
+- Answer spend-lookup questions for any date range, relative ("last month", "this week", "last 7 days", "year to date") or explicit ("between March 1 and March 15"). Resolve relative ranges into concrete YYYY-MM-DD from/to values yourself using today's date before calling tools — never ask the user to convert it for you.
 - Help the user set, update, or remove budgets when they ask ("set my credit card budget to $400").
 - Proactively suggest useful observations when relevant (e.g. overspending vs. budget, unusual spikes), but don't lecture.
 - Always use tools to get real data before answering questions about the user's spending — never guess numbers.
 - Format currency as USD with a $ sign. Keep replies short and readable in a chat UI — a few sentences or a short list, not long reports.`;
+}
 
 const functionDeclarations: FunctionDeclaration[] = [
   {
@@ -233,6 +238,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const ai = new GoogleGenAI({ apiKey });
+    const systemPrompt = buildSystemPrompt(new Date().toISOString().slice(0, 10));
     const contents: Content[] = [
       ...history.map((m) => ({
         role: m.role === "assistant" ? "model" : "user",
@@ -244,7 +250,7 @@ export async function POST(req: NextRequest) {
     let response = await ai.models.generateContent({
       model: "gemini-flash-latest",
       contents,
-      config: { systemInstruction: SYSTEM_PROMPT, tools },
+      config: { systemInstruction: systemPrompt, tools },
     });
 
     for (let i = 0; i < 8; i++) {
@@ -270,7 +276,7 @@ export async function POST(req: NextRequest) {
       response = await ai.models.generateContent({
         model: "gemini-flash-latest",
         contents,
-        config: { systemInstruction: SYSTEM_PROMPT, tools },
+        config: { systemInstruction: systemPrompt, tools },
       });
     }
 
