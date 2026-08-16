@@ -10,7 +10,7 @@ type ChatMessage = { role: "user" | "assistant"; text: string };
 
 const SUGGESTIONS = [
   "Summarize my spending this month",
-  "Where can I cut back?",
+  "How much did I spend last month?",
   "Set my credit card budget to $500",
 ];
 
@@ -37,7 +37,7 @@ export default function AssistantChat({
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      text: "Hi! I can summarize your spending, help set budgets, and suggest ways to save. What would you like to know?",
+      text: "Hi! I'm Atlas, your personal finance assistant. I can summarize your spending, help set budgets, and suggest ways to save. How can I help you today?",
     },
   ]);
   const [input, setInput] = useState("");

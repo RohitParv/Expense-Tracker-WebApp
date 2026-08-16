@@ -30,7 +30,7 @@ export default function AssistantWidget({
           <div className="flex items-center justify-between gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-3.5">
             <div className="flex items-center gap-2 text-white">
               <Sparkles className="h-4 w-4" />
-              <h2 className="text-sm font-semibold">AI Assistant</h2>
+              <h2 className="text-sm font-semibold">Atlas</h2>
             </div>
             <button
               type="button"
@@ -50,7 +50,7 @@ export default function AssistantWidget({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Close AI assistant" : "Open AI assistant"}
+        aria-label={open ? "Close Atlas" : "Open Atlas"}
         className="fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-600/30 transition-transform hover:scale-105 active:scale-95 sm:right-6"
       >
         {open ? <X className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
